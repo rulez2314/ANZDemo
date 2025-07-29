@@ -15,6 +15,18 @@ final class UserListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var showError = false
+    @Published var searchText: String = ""
+    var filteredUsers: [User] {
+        guard !searchText.isEmpty else {
+            return users
+        }
+        return users.filter {
+            $0.name.localizedCaseInsensitiveContains(searchText) ||
+            $0.username.localizedCaseInsensitiveContains(searchText) ||
+            $0.email.localizedCaseInsensitiveContains(searchText) ||
+            $0.company.localizedCaseInsensitiveContains(searchText)
+        }
+    }
     
     private let userService: UserServiceProtocol
     private var cancellables = Set<AnyCancellable>()
