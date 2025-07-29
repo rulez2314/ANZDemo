@@ -18,7 +18,7 @@ struct UserListView: View {
                     ProgressView("Loading users...")
                         .progressViewStyle(CircularProgressViewStyle())
                 } else {
-                    List(viewModel.users) { user in
+                    List(viewModel.filteredUsers) { user in
                         NavigationLink(destination: UserDetailView(user: user)) {
                             UserRowView(user: user)
                         }
@@ -37,6 +37,7 @@ struct UserListView: View {
                     }
                 }
             }
+            .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search users")
             .onAppear {
                 if viewModel.users.isEmpty {
                     viewModel.loadUsers()
